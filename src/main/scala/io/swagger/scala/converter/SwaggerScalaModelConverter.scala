@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.util.Iterator
 
-import com.fasterxml.jackson.databind.`type`.ReferenceType
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import __foursquare_shaded__.com.fasterxml.jackson.databind.`type`.ReferenceType
+import __foursquare_shaded__.com.fasterxml.jackson.module.scala.DefaultScalaModule
 import io.swagger.converter._
 import io.swagger.models.Model
 import io.swagger.models.properties._
