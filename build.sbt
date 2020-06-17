@@ -10,6 +10,8 @@ version := "1.0.6-fs0"
 
 scalaVersion := "2.11.12"
 
+crossScalaVersions := Seq("2.10.6", scalaVersion.value, "2.12.6", "2.13.1")
+
 libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaVersion.value exclude("com.google.guava", "guava"),
   "org.scalatest" %% "scalatest" % "3.0.8" % "test" exclude("com.google.guava", "guava"),
