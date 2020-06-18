@@ -4,40 +4,23 @@ import sbt._
 import Keys._
 import Defaults._
 
-organization := "io.swagger"
+organization := "__foursquare_shaded__.io.swagger"
 
-version := "1.0.7-SNAPSHOT"
+version := "1.0.6-fs0"
 
 scalaVersion := "2.11.12"
 
 crossScalaVersions := Seq("2.10.6", scalaVersion.value, "2.12.6", "2.13.1")
 
-organizationHomepage in ThisBuild := Some(url("http://swagger.io"))
-
-scalacOptions in ThisBuild ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked")  
-
-publishMavenStyle in ThisBuild := true
-
-publishArtifact in Test := false
-
-pomIncludeRepository := { x => false }
-
 libraryDependencies ++= Seq(
-  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "io.swagger" % "swagger-core" % "1.5.24",
-  "org.scalatest" %% "scalatest" % "3.0.8" % "test",
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.10",
-  "junit" % "junit" % "4.12" % "test"
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value exclude("com.google.guava", "guava"),
+  "org.scalatest" %% "scalatest" % "3.0.8" % "test" exclude("com.google.guava", "guava"),
+  "junit" % "junit" % "4.12" % "test" exclude("com.google.guava", "guava"),
 )
 
-publishTo := {
-  if (version.value.trim.endsWith("SNAPSHOT"))
-    Some("Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
-  else
-    Some("Sonatype Nexus Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-}
-
-credentials in ThisBuild += Credentials (Path.userHome / ".ivy2" / ".credentials")
+// NOTE(ssoman): If re-patching, you will need to drop copies of our shaded jackson jar, jackson-module-scala jar
+// and shaded swagger jar into the repo's top-level 'lib' directory for sbt to find them.
+unmanagedBase := file("lib")
 
 resolvers in ThisBuild ++= Seq(
   Resolver.mavenLocal,
@@ -46,40 +29,3 @@ resolvers in ThisBuild ++= Seq(
   Resolver.sonatypeRepo("releases"),
   Resolver.sonatypeRepo("snapshots")
 )
-
-publishMavenStyle := true
-
-publishArtifact in Test := false
-
-pomIncludeRepository := { x => false }
-
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
-
-homepage := Some(new URL("https://github.com/swagger-api/swagger-scala-module"))
-
-parallelExecution in Test := false
-
-startYear := Some(2014)
-
-licenses := Seq(("Apache License 2.0", new URL("http://www.apache.org/licenses/LICENSE-2.0.html")))
-
-pomExtra := {
-  pomExtra.value ++ Group(
-    <scm>
-      <connection>scm:git:git@github.com:swagger-api/swagger-scala-module.git</connection>
-      <developerConnection>scm:git:git@github.com:swagger-api/swagger-scala-module.git</developerConnection>
-      <url>https://github.com/swagger-api/swagger-scala-module</url>
-    </scm>
-      <issueManagement>
-        <system>github</system>
-        <url>https://github.com/swagger-api/swagger-scala-module/issues</url>
-      </issueManagement>
-      <developers>
-        <developer>
-          <id>fehguy</id>
-          <name>Tony Tam</name>
-          <email>fehguy@gmail.com</email>
-        </developer>
-      </developers>
-  )
-}
